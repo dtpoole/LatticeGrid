@@ -23,3 +23,7 @@ end
 def email_subject
   "Contact from the LatticeGrid Publications site at the Northwestern Robert H. Lurie Comprehensive Cancer Center"
 end
+
+def pmcid_base_url
+  'http://www.ncbi.nlm.nih.gov/pmc/articles/'
+end

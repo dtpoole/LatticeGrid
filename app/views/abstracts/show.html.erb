@@ -32,6 +32,9 @@
 	<div id="import">
 		<b>Note</b><br/>
 		Automated medline import. Electronic deposit: <%= @publication.deposited_date %>.Electronic publication: <%= @publication.electronic_publication_date %>. Publication Date: <%= @publication.publication_date %>. Publication status: <%= @publication.publication_status %>. Status: <%= @publication.status %>. <br/>
+		<% if @publication.pmcid %>
+		  PMCID: <%= link_to @publication.pmcid, pmcid_base_url + @publication.pmcid %>
+		<% end %>
 	</div>
 	<div id="linkout">
 		<%= link_to 'Go to PubMed entry', @publication.url  %>
