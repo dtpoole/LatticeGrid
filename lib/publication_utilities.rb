@@ -114,7 +114,7 @@ def InsertPublication (publication)
         :year    => reference.year,
         :pubmed  => reference.pubmed,
         :url     => reference.url,
-        :mesh    => reference.mesh.join(";\n")
+        :mesh    => reference.mesh != '' ? reference.mesh.join(";\n") : nil
       )
     else
       if thePub.publication_date != medline.publication_date || thePub.status != medline.status || thePub.publication_status != medline.publication_status then
@@ -130,7 +130,7 @@ def InsertPublication (publication)
           thePub.year    = reference.year
           thePub.pubmed  = reference.pubmed
           thePub.url     = reference.url
-          thePub.mesh    = reference.mesh.join(";\n")
+          thePub.mesh    = reference.mesh != '' ? reference.mesh.join(";\n") : nil
           thePub.save!
         end
         # HandleMeshTerms(thePub.mesh, thePub.id)
