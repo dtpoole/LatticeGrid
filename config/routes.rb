@@ -2,6 +2,7 @@ ActionController::Routing::Routes.draw do |map|
   # need to add .js to any rjs files we cache
   map.connect 'abstracts/admin', :controller => 'abstracts', :action => 'ccsg', :conditions => { :method => :get } #legacy url. delete after 12/1/09
   map.show_investigator 'investigators/:id/show/:page', {:controller => "investigators",:action => "show", :conditions => { :method => :get }  }
+  map.print_investigator 'investigators/:id/print/:page', {:controller => "investigators",:action => "print", :conditions => { :method => :get }  }
   map.abstracts_by_year 'abstracts/:id/year_list/:page', {:controller => "abstracts",:action => "year_list", :conditions => { :method => :get } }
   map.index_orgs 'orgs/index', :controller => 'orgs', :action => 'index'  #handle the route for orgs_path to make sure it is cached properly
   map.resources :orgs, :only => [:index, :show], :collection => { :stats => :get, :list => :get, :centers => :get, :departments => :get, :programs => :get }, 

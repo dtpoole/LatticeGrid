@@ -106,6 +106,7 @@ namespace :cache do
       run_ajax_curl tag_cloud_side_investigator_url(:id => inv.id)
       run_ajax_curl tag_cloud_investigator_url(:id => inv.id)
       run_curl show_investigator_url(:id => inv.username, :page => 1)
+      run_curl print_investigator_url(:id => inv.username, :page => 1)
       #run_curl url_for :controller => 'investigators', :action => 'show', :id => inv.username, :page => 1
     end
   end

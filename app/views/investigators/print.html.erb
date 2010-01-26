@@ -1,0 +1,40 @@
+<% @title = "Publications for #{params[:name]}" %>
+
+<% if @abstracts.length > 0 %>
+
+	<div style="font-weight:bold; font-size: 16px;"><%= @title %></div>
+	<hr />
+	<table style="width: 50%;">
+	<tr>
+	<td>Found <%= pluralize(@total_entries, 'publication') %>.</td>
+	<td><%= will_paginate(@abstracts, :outer_window => 5, :inner_window => 5) if !@all %><td>
+	<td>
+		
+		<% if params[:abstracts] %>
+		<a href="<%= request.request_uri.gsub('&abstracts=1', '').gsub('abstracts=1&', '') %>">Hide Abstracts</a>
+		<% else %>
+		<a href="<%= request.request_uri + '&abstracts=1' %>">Show Abstracts</a>
+		<% end %>
+		
+		</td>
+	</tr>
+	</table>
+	<hr />
+	
+	<ul class="print_view">
+	<% @abstracts.each do |publication| %>
+	  <li><%= nlm_format_publication(publication, false, false) %></li>
+		<% if params[:abstracts] -%>
+		<% if publication.abstract -%>
+			<div class="abstract_print" style="line-height: 1.4em;">
+			<%= publication.abstract -%>
+			</div>
+			<br />
+		<% end %>
+		<% end %>
+	<% end %>
+	</ul>
+
+<% else%>
+  <br /><h3>Sorry, no publications found.</h3>
+<% end %>

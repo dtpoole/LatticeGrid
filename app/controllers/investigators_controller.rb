@@ -84,7 +84,23 @@ class InvestigatorsController < ApplicationController
       format.html { render :template => "shared/tag_cloud", :locals => {:tags => tags}}
       format.js  { render  :partial => "shared/tag_cloud", :locals => {:tags => tags}  }
     end
-  end 
+  end
+  
+  def print
+    if params[:id].nil? then
+      redirect_to( year_list_abstracts_path)
+    elsif params[:page].nil? then
+      params[:page]="1"
+      redirect_to params
+    else
+      handle_member_name
+      @do_pagination = "1"
+      @abstracts = Abstract.display_investigator_data(params[:investigator_id],params[:page] )
+      @all_abstracts = Abstract.display_all_investigator_data(params[:investigator_id])
+      @total_entries=@abstracts.total_entries
+      render :layout => 'print'
+    end
+  end
 
   private
   def handle_member_name

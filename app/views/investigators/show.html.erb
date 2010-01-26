@@ -15,7 +15,7 @@
 	<td width="800px">
 		<%= render :partial => "shared/investigator_bio", :locals => { :investigator => @investigator } %>
 		<%= render :partial => "all_tags", :locals => { :investigator => @investigator } if @include_all_mesh %>
-		<%= render :partial => "shared/abstract_listing", :locals => { :abstracts => @abstracts, :do_pagination => @do_pagination, :heading => "Publications (#{@total_entries})", :show_paginator => @show_paginator, :include_investigators => @include_investigators, :include_pubmed_id => @include_pubmed_id, :include_collab_marker => @include_collab_marker  } %>
+		<%= render :partial => "shared/abstract_listing", :locals => { :abstracts => @abstracts, :do_pagination => @do_pagination, :heading => "Publications (#{@total_entries}) (#{link_to('print view', print_investigator_path(:id=>@investigator.username, :page=>1), :popup => true)})", :show_paginator => @show_paginator, :include_investigators => @include_investigators, :include_pubmed_id => @include_pubmed_id, :include_collab_marker => @include_collab_marker  } %>
 		
 	</td>
 	<td>
