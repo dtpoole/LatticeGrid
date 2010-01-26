@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100125194529) do
+ActiveRecord::Schema.define(:version => 20100125214256) do
 
   create_table "abstracts", :force => true do |t|
     t.text     "endnote_citation"
@@ -49,6 +49,11 @@ ActiveRecord::Schema.define(:version => 20100125194529) do
     t.integer  "deleted_id"
     t.string   "deleted_ip"
     t.string   "pmcid"
+    t.string   "editors"
+    t.string   "publisher"
+    t.string   "publisher_location"
+    t.string   "source"
+    t.string   "source_id"
   end
 
   create_table "investigator_abstracts", :force => true do |t|

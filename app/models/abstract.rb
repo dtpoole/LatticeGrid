@@ -7,7 +7,8 @@ class Abstract < ActiveRecord::Base
   has_many :organization_abstracts,
         :conditions => ['organization_abstracts.end_date is null or organization_abstracts.end_date >= :now', {:now => Date.today }]
   has_many :organizational_units, :through => :organization_abstracts
-  validates_uniqueness_of :pubmed
+  validates_uniqueness_of :pubmed, :allow_nil => true
+  validates_uniqueness_of :source_id, :scope => :source, :allow_nil => true
   acts_as_taggable  # for MeSH terms
 
   def self.annual_data( years)

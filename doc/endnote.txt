@@ -1,0 +1,37 @@
+EndNote Integration
+Author: David Poole <David.Poole@fccc.edu>
+
+Fox Chase Cancer Center uses a master EndNote DB as the source for abstracts.
+
+Requirements:
+
+sed - unix command.  This is used to quickly remove the <style> tags in the EndNote export. 
+
+Ruby Libraries:
+gem sources -a http://gems.github.com
+gem install nokogiri
+gem install pauldix-sax-machine
+
+
+To import an EndNote into LatticeGrid:
+(Tested with EndNote X2 for Windows)
+
+1. In EndNote select the references you want.
+2. Go to the "File" menu and select "Export..."
+3. In the dialog set "Save as type" to "XML".
+4. Click "Save"
+5. Run the following rake task. Specifying the file you exported:
+	rake endnote:import file=~/endnote.xml
+
+Once imported you can run the following to associate investigators, MESH terms, etc. 
+
+rake updateAbstractInvestigators updateInvestigatorInformation buildCoauthors tagAbstractsWithMeshTerms tagInvestigatorsWithMeshTerms updateOrganizationAbstractInformation
+
+
+Notes:
+
+Fox Chase created a custom field (custom2) for PMCID.  You may need to change or remove depending on your EndNote library.
+
+You may need to provide the full path to sed.
+
+

@@ -1,7 +1,7 @@
 <div id="abstractcontent">
 <div id="publication">
 	<div id="authors">
-	<% if @publication.full_authors.length > 10 %>
+	<% if @publication.full_authors and @publication.full_authors.length > 10 %>
 		<%= highlightInvestigator(@publication, @publication.full_authors) %>
 	<% else %>
 		<%= highlightInvestigator(@publication) %>
@@ -31,17 +31,25 @@
 	</div>
 	<div id="import">
 		<b>Note</b><br/>
+		<% if @publication.source == 'endnote' %>
+	  Publication Date: <%= @publication.publication_date %>.<br/>
+		<% else %>
 		Automated medline import. Electronic deposit: <%= @publication.deposited_date %>.Electronic publication: <%= @publication.electronic_publication_date %>. Publication Date: <%= @publication.publication_date %>. Publication status: <%= @publication.publication_status %>. Status: <%= @publication.status %>. <br/>
+		<% end %>
 		<% if @publication.pmcid %>
 		  PMCID: <%= link_to @publication.pmcid, pmcid_base_url + @publication.pmcid %>
 		<% end %>
 	</div>
+	<% if @publication.url %>
 	<div id="linkout">
 		<%= link_to 'Go to PubMed entry', @publication.url  %>
 	</div>
+	<% end %>
+	<% if @publication.endnote_citation %>
 	<div id="linkout">
 		<%= link_to 'View citation formatted for EndNote', endnote_abstract_path(@publication)  %>
 	</div>
+	<% end %>
 </div>
 
 
