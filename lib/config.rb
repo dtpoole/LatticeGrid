@@ -27,3 +27,8 @@ end
 def pmcid_base_url
   'http://www.ncbi.nlm.nih.gov/pmc/articles/'
 end
+
+def nlm_format
+  # Format citations in NLM format?
+  true
+end

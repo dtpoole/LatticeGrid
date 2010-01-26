@@ -2,9 +2,17 @@
 <div id="publication">
 	<div id="authors">
 	<% if @publication.full_authors and @publication.full_authors.length > 10 %>
-		<%= highlightInvestigator(@publication, @publication.full_authors) %>
+	  <% if nlm_format %>
+	    <%= nlm_formatted_authors(@publication.full_authors, @publication) %>
+	  <% else %>
+	    <%= highlightInvestigator(@publication, @publication.full_authors) %>
+	  <% end %>
 	<% else %>
-		<%= highlightInvestigator(@publication) %>
+	  <% if nlm_format %>
+	    <%= nlm_formatted_authors(@publication.authors, @publication) %>
+	  <% else %>
+	    <%= highlightInvestigator(@publication) %>
+	  <% end %>
 	<% end %>
 	</div>
 	<div id="title">
@@ -13,7 +21,7 @@
 	<div id="journal">
 	<i><%= @publication.journal %></i> 	
 	(<%= @publication.year %>)
-	<% if @publication.pages.length > 0 %>
+	<% if @publication.pages and @publication.pages.length > 0 %>
 		<%= h(@publication.volume) %>:<%= h(@publication.pages) %>.
 	<% else %>
 	 <i>In process.</i>
