@@ -426,8 +426,8 @@ border-bottom: 2px solid #ccc;
 }
 
 #last_load_date {
-	float: right;  
-	margin-top: -15px;
+	text-align: center;  
+	margin-top: 5px;
 	margin-right: 10px;
 	padding: 3px;
 }
