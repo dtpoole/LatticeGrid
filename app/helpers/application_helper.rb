@@ -9,7 +9,7 @@ module ApplicationHelper
 		  if org_type.nil? or unit.kind_of?(org_type)
     		out+="<li>"
     		out+=link_to( unit.abbreviation.gsub(/\'/, ""), yield(unit.id))
-        out+=build_menu(unit.children, nil, &block) if unit.child?
+        out+=build_menu(unit.children, nil, &block) if !unit.children.empty?
     		out+="</li>"
   		end
 		end
