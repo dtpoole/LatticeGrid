@@ -218,14 +218,14 @@ td.list-title-right {
 
 /* --- HEADER --- */
 #banner {
-	border-bottom: 1px solid #1c1079;
+	border-bottom: 1px solid #888;
 	margin-left:auto;
 	margin-right:auto;
 	width:1180px;
-	height:120px;
-/*	background: url(../images/pageheader.jpg) ; */
+	/*height:90px;
+	background: url(../images/pageheader.jpg) ; */
 	vertical-align:bottom;
-    text-align: center;
+    text-align: left;
 	font-size:12px;
 	display: block;}
 
@@ -235,7 +235,13 @@ td.list-title-right {
 
 
 #banner img {
+	clear: both;
+}
+
+#banner h2 {
 	float: left;
+	font-size: 24px;
+	margin-left: 20px;
 }
 
 #columns {
@@ -286,6 +292,7 @@ div.notice {
 	height:auto;
 	vertical-align: top;
 	background-color: #FFFFFF;
+
 }
 
 #side {
@@ -297,7 +304,8 @@ div.notice {
 	width: 160px;
 	height: 790px;
 	color: #000;
-	background-color: #709fc7;
+	background-color: #8BBFE4;
+	
 }
 
 #sideinfo {
@@ -342,16 +350,24 @@ div.notice {
   margin: 0px;
     color: #fff;
     font-size: 12px;
-    background-color: #339;
+    background-color: #CCD4D7;
+border-top: 1px solid #ccc;
+border-bottom: 2px solid #ccc;
 }
 
 #niceline {
-  padding-left: 50px;
-  height: 8px;
-  margin: 0px;
-    color: #fff;
-    font-size: 11px;
-    background-color: #709fc7;
+    color: #000;
+    font-size: 12px;
+    background-color: #8BBFE4;
+	padding: .3em;
+	padding-left: 45px;
+	border-bottom: 1px solid #888;
+
+}
+
+#niceline input {
+	font-size: 13px;
+	width: 200px;
 }
 
 #content {
