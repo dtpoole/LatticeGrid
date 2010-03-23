@@ -1,6 +1,9 @@
 <td class="list-left"> 
 	<% if nlm_format %>
 		<%= nlm_format_publication(publication) %>
+		<% if publication.pmcid and publication.pmcid.length > 0 %>
+			&nbsp; PMCID: <%= link_to publication.pmcid, pmcid_base_url + publication.pmcid, :popup => true %>
+        <% end %>
     <% else %>
 		<%= highlightInvestigator(publication) %>
 		<%= link_to publication.title, abstract_path(publication) %>
