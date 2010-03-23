@@ -71,10 +71,22 @@ module EndNoteXML
     element :number, :as => :issue
     elements 'pub-dates', :as => :pub_dates, :class => Dates
     element :year
-    element 'ref-type', :value => :name,  :as => :kind
     elements :keywords, :as => :keywords, :class => Keywords
     elements :url, :as => :urls
     element :custom2, :as => :pmcid
+    element 'ref-type', :value => :name,  :as => :ref_type
+    element 'work-type', :as => :work_type
+    
+    def kind
+      if work_type =~ /Article/
+        'Journal Article'
+      elsif !work_type
+        ref_type
+      else
+        work_type
+      end
+    end
+    
   
     def journal
       # if journal is empty use the secondary_title field for journal.
@@ -88,11 +100,15 @@ module EndNoteXML
             journal_name = secondary_title
         end
       end
-      journal_name
+      journal_name.nil? ? nil : journal_name.gsub('.', '')
     end
     
     def journal_abbreviation
-      periodical.size > 0 ? periodical.first.journal_abbr : nil
+      if periodical.size > 0 and !periodical.first.journal_abbr.nil?
+        periodical.first.journal_abbr.gsub('.', '')
+      else
+        nil
+      end
     end
     
     def authors
@@ -229,6 +245,7 @@ module EndNoteXML
           rescue ActiveRecord::RecordInvalid => invalid
             @errors[pub.endnote_id] = invalid.record.errors.full_messages.join("\n")
           end
+          
           
         end
         
