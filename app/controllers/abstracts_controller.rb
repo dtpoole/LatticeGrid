@@ -155,7 +155,7 @@ class AbstractsController < ApplicationController
   
   def list_heading
     @tags = Abstract.tag_counts(:limit => 150, :order => "count desc", 
-                  :conditions => ["abstracts.year in (:year)", {:year=>@year }])
+                  :conditions => ["abstracts.year in (:year)", {:year=>@year.to_s }])
     total_entries = total_length(@abstracts) 
     @heading = "Publication Listing for #{@year}  (#{total_entries} publications)"
   end
