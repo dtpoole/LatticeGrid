@@ -5,7 +5,7 @@ def show_regexp(a, re)
   if a =~ re 
     "#{$`}<<#{$&}>>#{$'}" 
   else 
-    "no match" 
+    "no match - #{a} - #{re}" 
   end 
 end 
 
@@ -21,7 +21,19 @@ end
 def IsFirstAuthor(abstract,investigator)
   puts "searching for first author using PI #{investigator.last_name}, #{investigator.first_name} "  if @debug
   if abstract.full_authors.blank?
-    return FindREmatch(abstract.authors,  /^#{investigator.last_name}, #{investigator.first_name.at(0)}/i)
+    if investigator.pubmed_search_name
+      if investigator.pubmed_search_name =~ /;/
+        investigator.pubmed_search_name.split(';').each do |name|
+            return true if FindREmatch(abstract.authors, /^#{name}/i)
+        end
+      else
+        return true if FindREmatch(abstract.authors, /^#{investigator.pubmed_search_name}/i)
+      end
+    elsif investigator.middle_name
+      return true if FindREmatch(abstract.authors, /^#{investigator.last_name}, #{investigator.first_name.at(0)}[.\s]*#{investigator.middle_name.at(0)}[.\s]*/i)
+    else
+      return FindREmatch(abstract.authors,  /^#{investigator.last_name}, #{investigator.first_name.at(0)}/i)
+    end
   else
     return FindREmatch(abstract.full_authors,  /^#{investigator.last_name}, #{investigator.first_name[0..3]}/i) 
   end
@@ -30,7 +42,19 @@ end
 
 def IsLastAuthor(abstract,investigator)
   if abstract.full_authors.blank?
-    return FindREmatch(abstract.authors,  /#{investigator.last_name}, #{investigator.first_name.at(0)}[^;]*$/i)
+    if investigator.pubmed_search_name
+       if investigator.pubmed_search_name =~ /;/
+          investigator.pubmed_search_name.split(';').each do |name|
+              return true if FindREmatch(abstract.authors, /#{name.strip}[^;]*$/i)
+          end
+        else
+          return true if FindREmatch(abstract.authors, /#{investigator.pubmed_search_name}[^;]*$/i)
+        end
+    elsif investigator.middle_name
+      return true if FindREmatch(abstract.authors, /#{investigator.last_name}, #{investigator.first_name.at(0)}[.\s]*#{investigator.middle_name.at(0)}[.\s]*$/i)
+    else
+      return FindREmatch(abstract.authors,  /#{investigator.last_name}, #{investigator.first_name.at(0)}[^;]*$/i)
+    end
   else
     return FindREmatch(abstract.full_authors,  /#{investigator.last_name}, #{investigator.first_name[0..3]}[^;]*$/i) 
   end
@@ -56,7 +80,21 @@ def IsAuthor(abstract,investigator)
   if abstract.full_authors.blank?
     abstract.authors.split("\n").each do |author|
       # author string will look like: "Vorontsov, I. I.\nMinasov, G.\nBrunzelle, J. S.\nShuvalova, L.\nKiryukhina, O.\nCollart, F. R.\nAnderson, W. F."
-      return true if FindREmatch(author,  /^#{investigator.last_name}, #{investigator.first_name.at(0)}/i)
+      if investigator.pubmed_search_name
+         if investigator.pubmed_search_name =~ /;/
+            investigator.pubmed_search_name.split(';').each do |name|
+                if FindREmatch(author, /^#{name.strip}/i)
+                  return true
+                end  
+            end
+          else
+            return true if FindREmatch(author, /^#{investigator.pubmed_search_name}/i)
+          end
+      elsif investigator.middle_name
+        return true if FindREmatch(author, /^#{investigator.last_name}, #{investigator.first_name.at(0)}[.\s]*#{investigator.middle_name.at(0)}[.\s]*/i)
+      else
+        return true if FindREmatch(author,  /^#{investigator.last_name}, #{investigator.first_name.at(0)}/i)
+      end
     end
   else
     abstract.full_authors.split("\n").each do |author|
@@ -94,7 +132,7 @@ def InsertPublication (publication)
   thePub = Abstract.find_by_pubmed(reference.pubmed)
   begin 
     if thePub.nil? || thePub.id < 1 then
-      thePub = Abstract.create! (
+      thePub = Abstract.create!(
         :endnote_citation => reference.endnote, 
         :abstract => reference.abstract,
         :authors => reference.authors.join("\n"),
@@ -151,13 +189,13 @@ def UpdateOrganizationAbstract(unit_id, abstract_id)
   if OrganizationAbstract.find( :first,
     :conditions => [" abstract_id = :abstract_id AND organizational_unit_id = :unit_id",
         {:unit_id => unit_id, :abstract_id => abstract_id}]).nil?
-    InsertOrganizationAbstract (unit_id, abstract_id)
+    InsertOrganizationAbstract(unit_id, abstract_id)
   end
 end
 
 def InsertOrganizationAbstract (unit_id, abstract_id)
   begin 
-     theOrgPub = OrganizationAbstract.create! (
+     theOrgPub = OrganizationAbstract.create!(
        :abstract_id => abstract_id,
        :organizational_unit_id  => unit_id
      )
